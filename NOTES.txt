@@ -1,0 +1,442 @@
+1. django-admin startproject djangoprojects
+2. Python manage.py startapp calculatorapp
+
+Note: install virtualenv using cmd > virtualenv myenv
+      in myenv install django
+      check > python manage.py runserver
+      also install, pip freeze > requirements.txt
+    
+
+3.  ADD
+   a. os.path.join(BASE_DIR,'templates') in TEMPLATES > DIR[] 
+   b. STATICFILES_DIRS = [
+      os.path.join(BASE_DIR,'static',)
+      ]
+      below: STATIC_URL = 'static/'
+4. open djangoprojects > urls.py update the code to
+
+from django.contrib import admin
+from django.urls import path,include 
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('calculatorapp',include('calculatorapp.urls'))
+]
+
+
+5. Create a file name "urls.py" in calculatorapp
+6. calculatorapp > urls.py add
+
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('',views.index,name='index'),
+]
+
+7. calculatorapp > views.py update
+
+from django.shortcuts import render
+from django.http import HttpResponse
+# Create your views here.
+def index(request):
+    return HttpResponse("server started")
+
+8. in cmd > python manage.py runserver
+
+YOU WIL BE GETTING AN ERROR AT THE BEGINGING PAGE OF LOCAL HOST TO OVERCOME IT USE THE FOLLOWING STEPS
+9. create a rootapp folder in the djangoprojects
+10. In djangoprojetcs > urls.py: update the code to
+from django.contrib import admin
+from django.urls import path,include 
+urlpatterns = [
+    path('',include('rootapp.urls')),
+    path('admin/', admin.site.urls),
+    path('calculatorapp',include('calculatorapp.urls'))
+]
+11. rootapp > urls.py: add
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('',views.root,name='root'),
+    
+]
+12. rootapp > apps: add
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+def root(request):
+    return HttpResponse("the server has started")
+    
+13. Now activate the env and run the surver
+14. Create 2 different folder: "templates" & "static"
+15. djangoprojects >settings.py: Update the code in DIRS to
+'DIRS': [os.path.join(BASE_DIR,'templates/calculatorapp')],
+16. Create a new folder in template that has name "calculatorapp"
+17. Create a new file in "calculatorapp" that has name "index.html"
+18. paste the bootstarp website code her in index.html
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+19. Write the code in index.html: FRONTEND
+
+{%load static%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Django Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Django Calculator App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
+              <li class="nav-item">
+                <a class="nav-link" href="#">About
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#instructions">Instructions</a>
+              </li>    
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid" style="margin-bottom: 20rem;">
+          <div class="row">
+              <div class ="col-md-6" style="margin: 1rem auto 0 auto;">
+                  <img class="img-fluid" src={% static 'logo.jpg'%}> </img>
+                  <div class="card">
+                      <div class="card-body"> 
+                          <form method="GET" action="#">
+                              <div class="form-group">
+                                  <input type="search" class="form-control" name="query" id="query">
+                                  </input>
+                               </div>
+                               <div class="row"> </div>
+                               <div class="col-md-6"> <input type="submit" class="btn btn-success" style="margin: 1rem auto 0 auto;"> </input> </div>
+                               <div class="col-md-6"> <input type="reset" class="btn btn-danger" style="margin: 1rem auto 0 auto;"> </input> </div>
+                          </form>
+                      </div>
+                  </div>    
+
+              </div>
+              
+          </div>
+          <div class="row"> </div>
+          <div class="col-md-6" style="margin: 2rem auto 0 auto;"> </div>
+          <p class="display-4" id="about" name="about" style="text-align: centre; ">
+              About
+          </p>
+          <hr>
+          <p class="lead">
+            Our Calculator app can perform mathematical operations
+          </p> 
+          </hr>
+          <div class="row"> </div>
+          <div class="col-md-6" style="margin: 2rem auto 0 auto;"> </div>
+          <p class="display-4" id="instructions" name="instructions" style="text-align: centre; ">
+              Instructions
+          </p>
+          <hr>
+          <ul class="list-group">
+            <li class="list-group-item">+ is for addtion</li>
+            <li class="list-group-item">* for multiplication</li>
+            <li class="list-group-item">/ for division</li>
+            <li class="list-group-item">- is for subtraction</li>
+            <li class="list-group-item">// for floor division</li>
+          </ul> 
+          </hr>
+      </div>  
+
+      <div class="container-fluid">
+          <div class="row">
+              <footer class="fixed-bottom navbar-light" style="background: black; color: white; text-align: center">
+                  <p> Thanks for using the app </p>
+              </footer>   
+          </div>
+      </div>
+      <div class="card">
+
+      </div>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+20. calculatorapp > urls.py: Update the code
+
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('',views.index,name='index'),
+    path('submitquery',views.submitquery,name='submitquery')
+]
+
+21. calculatorapp > views.py: Update the code
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+
+def index(request):
+    return render(request,'index.html')
+def submitquery(request):
+    q = request.GET["query"]
+    return HttpResponse(q)
+
+22. Update the code in index.html 
+
+{%load static%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Django Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Django Calculator App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
+              <li class="nav-item">
+                <a class="nav-link" href="#">About
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#instructions">Instructions</a>
+              </li>    
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid" style="margin-bottom: 20rem;">
+          <div class="row">
+              <div class ="col-md-6" style="margin: 1rem auto 0 auto;">
+                  <img class="img-fluid" src={% static 'logo.jpg'%}> </img>
+                  <div class="card">
+                      <div class="card-body"> 
+                          <form method="GET" action="{% url 'submitquery' %}">
+                              <div class="form-group">
+                                  <input type="search" class="form-control" name="query" id="query">
+                                  </input>
+                               </div>
+                               <div class="row"> </div>
+                               <div class="col-md-6"> <input type="submit" class="btn btn-success" style="margin: 1rem auto 0 auto;"> </input> </div>
+                               <div class="col-md-6"> <input type="reset" class="btn btn-danger" style="margin: 1rem auto 0 auto;"> </input> </div>
+                          </form>
+                      </div>
+                  </div>    
+
+              </div>
+              
+          </div>
+          <div class="row"> </div>
+          <div class="col-md-6" style="margin: 2rem auto 0 auto;"> </div>
+          <p class="display-4" id="about" name="about" style="text-align: centre; ">
+              About
+          </p>
+          <hr>
+          <p class="lead">
+            Our Calculator app can perform mathematical operations
+          </p> 
+          </hr>
+          <div class="row"> </div>
+          <div class="col-md-6" style="margin: 2rem auto 0 auto;"> </div>
+          <p class="display-4" id="instructions" name="instructions" style="text-align: centre; ">
+              Instructions
+          </p>
+          <hr>
+          <ul class="list-group">
+            <li class="list-group-item">+ is for addtion</li>
+            <li class="list-group-item">* for multiplication</li>
+            <li class="list-group-item">/ for division</li>
+            <li class="list-group-item">- is for subtraction</li>
+            <li class="list-group-item">// for floor division</li>
+          </ul> 
+          </hr>
+      </div>  
+
+      <div class="container-fluid">
+          <div class="row">
+              <footer class="fixed-bottom navbar-light" style="background: black; color: white; text-align: center">
+                  <p> Thanks for using the app </p>
+              </footer>   
+          </div>
+      </div>
+      <div class="card">
+
+      </div>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+23. Make changes in calculatorapp > views.py
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+
+def index(request):
+    return render(request,'index.html')
+
+
+def submitquery(request):
+    q = request.GET['query']
+    try:
+        ans = eval(q)
+        mydictionary = {
+            "q" : q,
+            "ans" : ans,
+            "error" : False,
+            "result" : True
+        }
+        return render(request,'index.html',context=mydictionary)
+    except:
+        mydictionary = {
+            "error" : True,
+            "result" : False
+
+        }
+        return render(request,'index.html',context=mydictionary)
+
+24. Final HTML: index.html
+f{%load static%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Django Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Django Calculator App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
+              <li class="nav-item">
+                <a class="nav-link" href="#">About
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#instructions">Instructions</a>
+              </li>    
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid" style="margin-bottom: 20rem;">
+          <div class="row">
+              <div class="col-md-6" style="margin: 0 auto;">
+                  {% if error%}
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  {% else %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ans}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  
+              </div> {% endif %}
+              
+          </div>
+          <div class="row">
+              <div class ="col-md-6" style="margin: 1rem auto 0 auto;">
+                  <img class="img-fluid" src={% static 'logo.jpg'%}> </img>
+                  <div class="card">
+                      <div class="card-body"> 
+                          <form method="GET" action="{% url 'submitquery' %}">
+                              <div class="form-group">
+                                  <input type="search" class="form-control" name="query" id="query">
+                                  </input>
+                               </div>
+                               <div class="row"> </div>
+                               <div class="col-md-6"> <input type="submit" class="btn btn-success" style="margin: 1rem auto 0 auto;"> </input> </div>
+                               <div class="col-md-6"> <input type="reset" class="btn btn-danger" style="margin: 1rem auto 0 auto;"> </input> </div>
+                          </form>
+                      </div>
+                  </div>    
+
+              </div>
+              
+          </div>
+          <div class="row"> </div>
+          <div class="col-md-6" style="margin: 2rem auto 0 auto;"> </div>
+          <p class="display-4" id="about" name="about" style="text-align: centre; ">
+              About
+          </p>
+          <hr>
+          <p class="lead">
+            Our Calculator app can perform mathematical operations
+          </p> 
+          </hr>
+          <div class="row"> </div>
+          <div class="col-md-6" style="margin: 2rem auto 0 auto;"> </div>
+          <p class="display-4" id="instructions" name="instructions" style="text-align: centre; ">
+              Instructions
+          </p>
+          <hr>
+          <ul class="list-group">
+            <li class="list-group-item">+ is for addtion</li>
+            <li class="list-group-item">* for multiplication</li>
+            <li class="list-group-item">/ for division</li>
+            <li class="list-group-item">- is for subtraction</li>
+            <li class="list-group-item">// for floor division</li>
+          </ul> 
+          </hr>
+      </div>  
+
+      <div class="container-fluid">
+          <div class="row">
+              <footer class="fixed-bottom navbar-light" style="background: black; color: white; text-align: center">
+                  <p> Thanks for using the app </p>
+              </footer>   
+          </div>
+      </div>
+      <div class="card">
+
+      </div>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>
